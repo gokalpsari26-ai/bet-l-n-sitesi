@@ -1,1 +1,195 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sana Küçük Bir Sürpriz</title>
 
+<style>
+body {
+    margin: 0;
+    font-family: 'Comic Sans MS', Arial, sans-serif;
+    background: #ffe6f0;
+    text-align: center;
+    color: #b3005e;
+    overflow-x: hidden;
+    transition: background 1.5s ease;
+}
+
+.container {
+    padding: 30px 15px;
+}
+
+.card {
+    background: white;
+    border-radius: 25px;
+    padding: 25px;
+    max-width: 420px;
+    margin: auto;
+    box-shadow: 0 10px 25px rgba(255,105,180,0.35);
+    animation: fadeIn 1.8s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+    color: #ff4d94;
+    font-size: 26px;
+}
+
+p {
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+button {
+    margin-top: 15px;
+    background: #ff69b4;
+    border: none;
+    border-radius: 30px;
+    padding: 12px 24px;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+button:hover {
+    background: #ff4d94;
+}
+
+.kitty {
+    width: 120px;
+    margin: 20px auto 10px;
+    transition: transform 0.3s ease;
+}
+
+.jump {
+    animation: jump 0.5s ease;
+}
+
+@keyframes jump {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-25px); }
+    100% { transform: translateY(0); }
+}
+
+#message {
+    margin-top: 10px;
+    font-size: 17px;
+    color: #ff1493;
+}
+
+#counter {
+    margin-top: 8px;
+    font-size: 15px;
+    color: #b3005e;
+}
+
+/* 💕 Uçan kalpler */
+.heart {
+    position: fixed;
+    bottom: 0;
+    font-size: 20px;
+    animation: floatUp 3s ease forwards;
+}
+
+@keyframes floatUp {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-100vh); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎵 Müzik -->
+<audio id="muzik" loop>
+    <source src="askmuzigi.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+    <div class="card">
+        <h1>💗 Sana Küçük Bir Sürpriz 💗</h1>
+
+        <img id="kitty" class="kitty"
+             src="https://i.imgur.com/6XGQZ6S.png"
+             alt="Hello Kitty"
+             onclick="etkilesim()">
+
+        <p>
+            Bazı şeyler anlatılmaz…  
+            hissedilir 💕
+        </p>
+
+        <div id="message">Hello Kitty sana bakıyor 🐱</div>
+        <div id="counter">💗 Kalp Sayısı: 0</div>
+
+        <button onclick="muzikBaslat()">🎵 Müziği Aç</button>
+    </div>
+</div>
+
+<script>
+const mesajlar = [
+    "O çok özel 💕",
+    "Kalbi çok güzel 🐱",
+    "Beni bile kıskandırıyor 😄",
+    "Ona gülmek çok yakışıyor 💗",
+    "Onu çok seviyorum 🐾"
+];
+
+let sayac = 0;
+let muzikBasladi = false;
+const muzik = document.getElementById("muzik");
+muzik.volume = 0;
+
+function etkilesim() {
+    const kitty = document.getElementById("kitty");
+    kitty.classList.add("jump");
+    setTimeout(() => kitty.classList.remove("jump"), 500);
+
+    sayac++;
+    document.getElementById("counter").innerText =
+        "💗 Kalp Sayısı: " + sayac;
+
+    const randomMesaj =
+        mesajlar[Math.floor(Math.random() * mesajlar.length)];
+    document.getElementById("message").innerText = randomMesaj;
+
+    kalpUcur();
+}
+
+function muzikBaslat() {
+    if (muzikBasladi) return;
+    muzikBasladi = true;
+
+    muzik.play();
+    document.body.style.background = "#ffd1e6";
+
+    let vol = 0;
+    const fade = setInterval(() => {
+        if (vol < 0.6) {
+            vol += 0.02;
+            muzik.volume = vol;
+        } else {
+            clearInterval(fade);
+        }
+    }, 100);
+}
+
+function kalpUcur() {
+    const kalp = document.createElement("div");
+    kalp.className = "heart";
+    kalp.innerText = "💖";
+    kalp.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(kalp);
+
+    setTimeout(() => kalp.remove(), 3000);
+}
+</script>
+
+</body>
+</html>
